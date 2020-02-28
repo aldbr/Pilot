@@ -846,7 +846,10 @@ class LaunchAgent(CommandBase):
     self.inProcessOpts.append('-o MaxRunningJobs=%s' % 1)
     # To prevent a wayward agent picking up and failing many jobs.
     self.inProcessOpts.append('-o MaxTotalJobs=%s' % 10)
-    self.jobAgentOpts = ['-o MaxCycles=%s' % self.pp.maxCycles]
+    self.jobAgentOpts = ['-o MaxCycles=%s' % self.pp.maxCycles,
+                         '-o PollingTime=%s' % self.pp.pollingTime,
+                         '-o StopOnApplicationFailure=%s' % self.pp.stopOnApplicationFailure,
+                         '-o StopAfterFailedMatches=%s' % self.pp.stopAfterFailedMatches]
 
     if self.debugFlag:
       self.jobAgentOpts.append('-o LogLevel=DEBUG')
@@ -946,6 +949,8 @@ class MultiLaunchAgent(CommandBase):
     # To prevent a wayward agent picking up and failing many jobs.
     self.inProcessOpts.append('-o MaxTotalJobs=%s' % self.pp.maxCycles)
     self.jobAgentOpts = ['-o MaxCycles=%s' % self.pp.maxCycles,
+                         '-o PollingTime=%s' % self.pp.pollingTime,
+                         '-o StopOnApplicationFailure=%s' % self.pp.stopOnApplicationFailure,
                          '-o StopAfterFailedMatches=0']
 
     if self.debugFlag:

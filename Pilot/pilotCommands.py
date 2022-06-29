@@ -799,6 +799,7 @@ class ConfigureSite(CommandBase):
         # ARC case
         # JOBID does not provide the full url in recent versions of ARC
         # JOBURL has been introduced recently and should be preferred when present
+        # Also JOBURL should be enriched with further details when the REST interface is used
         if "GRID_GLOBAL_JOBID" in os.environ:
             self.pp.flavour = "ARC"
             pilotRef = os.environ["GRID_GLOBAL_JOBID"]
@@ -806,6 +807,13 @@ class ConfigureSite(CommandBase):
         if "GRID_GLOBAL_JOBURL" in os.environ:
             self.pp.flavour = "ARC"
             pilotRef = os.environ["GRID_GLOBAL_JOBURL"]
+            if (
+                "GRID_GLOBAL_JOBINTERFACE" in os.environ
+                and os.environ["GRID_GLOBAL_JOBINTERFACE"] == "org.nordugrid.arcrest"
+            ):
+                pilotRef = os.path.join(
+                    os.path.dirname(pilotRef), "rest/1.0/jobs/", os.path.basename(pilotRef)
+                )
 
         # # DIRAC specific
 
